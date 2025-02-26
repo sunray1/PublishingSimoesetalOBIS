@@ -188,7 +188,7 @@ combined_dataframe$decimalLongitude <- sapply(combined_dataframe$CleanedData.Geo
 combined_dataframe$coordinateUncertaintyInMeters <- 50
 combined_dataframe$country <- "Portugal"
 combined_dataframe$locality <- "Berlengas Biosphere Reserve"
-combined_dataframe$locality <- "Berlengas Biosphere Reserve"
+combined_dataframe$geodeticDatum <- "WGS84"
 
 combined_dataframe <- combined_dataframe %>% select(-CleanedData.Geographical.location..N, 
                                                     -CleanedData.Geographical.location.W)
