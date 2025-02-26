@@ -4,4 +4,4 @@ This repository contains inputs, outputs and related code for mapping data from 
 
 Dataset contains environmental DNA (eDNA) identifications from the UNESCO site Berlengas Archipelago.
 
-Readble code is available: https://sunray1.github.io/PublishingSimoesetalOBIS/
+Readable code is available: https://sunray1.github.io/PublishingSimoesetalOBIS/
