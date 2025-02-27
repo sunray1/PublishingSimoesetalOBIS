@@ -39,8 +39,16 @@ Read in source csv table
 ```{r Read Source Data}
 
 input_file <- "input/OBIS-UNESCO_final.xlsx"
+input_sequences <- "input/occurrence_seqeunces.csv"
+input_reads <- "input/Number of reads-data processing.xlsx"
 
 input_data <- as.data.frame(read_excel(input_file))
+input_sequence_data <- read.csv(input_sequences, sep = ";")
+input_sequence_data <- input_sequence_data %>% distinct(taxonID, Sequence)
+input_read_data <- as.data.frame(read_excel(input_reads))
+input_read_data <- input_read_data %>%
+  rename(CleanedData.Sample_name = ...1, Filtered_reads = filtered) %>%
+  select(CleanedData.Sample_name, Filtered_reads)
 
 #to preview pretty table
 knitr::kable(head(input_data))
@@ -82,6 +90,7 @@ occurrence_input_data <- input_data %>% select(occurrenceID,
                                                species) %>% distinct()
 edna_input_data <- input_data %>% select(occurrenceID,
                                          Sample_name,
+                                         OTU_number,
                                          `Amount of water`) %>% distinct()
 
 ```
@@ -298,45 +307,10 @@ occurrence %<>% mutate(sampleSizeUnit)
 
 Total number of reads in the sample post processing.
 
-```{r sampleSizeValue, eval=FALSE, include=FALSE}
+```{r sampleSizeValue}
 occurrence <- occurrence %>%
-  mutate(sampleSizeValue = case_when(
-    CleanedData.Sample_name == "B00"  ~ NULL,
-    CleanedData.Sample_name == "B01"  ~ NULL,
-    CleanedData.Sample_name == "B02"  ~ NULL,
-    CleanedData.Sample_name == "B03"  ~ NULL,
-    CleanedData.Sample_name == "B04"  ~ NULL,
-    CleanedData.Sample_name == "B05"  ~ NULL,
-    CleanedData.Sample_name == "B06"  ~ NULL,
-    CleanedData.Sample_name == "B07"  ~ NULL,
-    CleanedData.Sample_name == "B08"  ~ NULL,
-    CleanedData.Sample_name == "B09"  ~ NULL,
-    CleanedData.Sample_name == "B10"  ~ NULL,
-    CleanedData.Sample_name == "B11"  ~ NULL,
-    CleanedData.Sample_name == "GM01" ~ NULL,
-    CleanedData.Sample_name == "GM02" ~ NULL,
-    CleanedData.Sample_name == "GM03" ~ NULL,
-    CleanedData.Sample_name == "GM04" ~ NULL,
-    CleanedData.Sample_name == "GM05" ~ NULL,
-    CleanedData.Sample_name == "GM06" ~ NULL,
-    CleanedData.Sample_name == "GM07" ~ NULL,
-    CleanedData.Sample_name == "GM08" ~ NULL,
-    CleanedData.Sample_name == "GM09" ~ NULL,
-    CleanedData.Sample_name == "GM10" ~ NULL,
-    CleanedData.Sample_name == "GM11" ~ NULL,
-    CleanedData.Sample_name == "GM13" ~ NULL,
-    CleanedData.Sample_name == "GM14" ~ NULL,
-    CleanedData.Sample_name == "GM15" ~ NULL,
-    CleanedData.Sample_name == "GM16" ~ NULL,
-    CleanedData.Sample_name == "GM18" ~ NULL,
-    CleanedData.Sample_name == "GM19" ~ NULL,
-    CleanedData.Sample_name == "GM20" ~ NULL,
-    CleanedData.Sample_name == "GM21" ~ NULL,
-    CleanedData.Sample_name == "GM22" ~ NULL,
-    CleanedData.Sample_name == "RM01" ~ NULL,
-    CleanedData.Sample_name == "RM02" ~ NULL,
-    CleanedData.Sample_name == "RM05" ~ NULL
-  ))
+  left_join(input_read_data, by = "CleanedData.Sample_name") %>%
+  rename(sampleSizeValue = Filtered_reads)
 ```
 
 ## materialSampleID
@@ -414,11 +388,13 @@ occurrence <- occurrence %>%
 dna_derived_data <- edna_input_data
 ```
 
-## DNA Derived Data Mapping
+## DNA_sequence
 
-```{r DNA_sequence, eval=FALSE, include=FALSE}
-DNA_sequence <- NULL
-dna_derived_data %<>% mutate(DNA_sequence)
+```{r DNA_sequence}
+dna_derived_data <- dna_derived_data %>%
+  left_join(input_sequence_data, by = c("OTU_number" = "taxonID")) %>%
+  rename(DNA_sequence = Sequence) %>% 
+  select(-OTU_number)
 ```
 
 ## target_gene
