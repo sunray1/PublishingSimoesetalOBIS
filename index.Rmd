@@ -181,17 +181,12 @@ dms_to_dd <- function(dms) {
   # Convert to decimal degrees
   decimal_degrees <- degrees + (minutes / 60) + (seconds / 3600)
   
-  # Make it negative if direction is S or W
-  if (direction %in% c("S", "W")) {
-    decimal_degrees <- -decimal_degrees
-  }
-  
   return(decimal_degrees)
 }
 
 # Apply function to Latitude and Longitude columns
 combined_dataframe$decimalLatitude <- sapply(combined_dataframe$CleanedData.Geographical.location..N, dms_to_dd)
-combined_dataframe$decimalLongitude <- sapply(combined_dataframe$CleanedData.Geographical.location.W, dms_to_dd)
+combined_dataframe$decimalLongitude <- -sapply(combined_dataframe$CleanedData.Geographical.location.W, dms_to_dd)
 
 # Add missing locality information
 combined_dataframe$coordinateUncertaintyInMeters <- 50
@@ -233,6 +228,7 @@ occurrence <- occurrence %>%
 ```{r eventDate}
 occurrence <- occurrence %>%
   mutate(
+    CleanedData.Month = ifelse(CleanedData.Month == "Sept", "Sep", CleanedData.Month),
     eventDate = match(CleanedData.Month, month.abb),
     eventDate = sprintf("%02d", eventDate),
     eventDate = paste0(CleanedData.Year, "-", eventDate)

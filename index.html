@@ -7,7 +7,7 @@
 
         <meta name="author" content="Chandra Earl" />
     
-        <meta name="date" content="2025-02-27" />
+        <meta name="date" content="2025-03-07" />
     
     <title>Bundling Simões et al 2024 to a DwC Archive</title>
 
@@ -1580,7 +1580,7 @@ Archive</li>
           <li class="divider"></li>
                                 <li><span><i class="glyphicon glyphicon-user"></i> Chandra
 Earl</span></li>
-                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2025-02-27</span></li>
+                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2025-03-07</span></li>
                   </ul>     
       </div>
       <div class="book-body fixed">
@@ -2141,26 +2141,21 @@ decimalLatitude, occurrenceStatus, basisOfRecord.</p>
 <span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>  <span class="co"># Convert to decimal degrees</span></span>
 <span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>  decimal_degrees <span class="ot">&lt;-</span> degrees <span class="sc">+</span> (minutes <span class="sc">/</span> <span class="dv">60</span>) <span class="sc">+</span> (seconds <span class="sc">/</span> <span class="dv">3600</span>)</span>
 <span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>  </span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>  <span class="co"># Make it negative if direction is S or W</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>  <span class="cf">if</span> (direction <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;W&quot;</span>)) {</span>
-<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>    decimal_degrees <span class="ot">&lt;-</span> <span class="sc">-</span>decimal_degrees</span>
-<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>  }</span>
-<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>  </span>
-<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>  <span class="fu">return</span>(decimal_degrees)</span>
-<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>}</span>
-<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a></span>
-<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a><span class="co"># Apply function to Latitude and Longitude columns</span></span>
-<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>decimalLatitude <span class="ot">&lt;-</span> <span class="fu">sapply</span>(combined_dataframe<span class="sc">$</span>CleanedData.Geographical.location..N, dms_to_dd)</span>
-<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>decimalLongitude <span class="ot">&lt;-</span> <span class="fu">sapply</span>(combined_dataframe<span class="sc">$</span>CleanedData.Geographical.location.W, dms_to_dd)</span>
-<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a></span>
-<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a><span class="co"># Add missing locality information</span></span>
-<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>coordinateUncertaintyInMeters <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>country <span class="ot">&lt;-</span> <span class="st">&quot;Portugal&quot;</span></span>
-<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>locality <span class="ot">&lt;-</span> <span class="st">&quot;Berlengas Biosphere Reserve&quot;</span></span>
-<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>geodeticDatum <span class="ot">&lt;-</span> <span class="st">&quot;WGS84&quot;</span></span>
-<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a></span>
-<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a>combined_dataframe <span class="ot">&lt;-</span> combined_dataframe <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>CleanedData.Geographical.location..N, </span>
-<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a>                                                    <span class="sc">-</span>CleanedData.Geographical.location.W)</span></code></pre></div>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>  <span class="fu">return</span>(decimal_degrees)</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>}</span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co"># Apply function to Latitude and Longitude columns</span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>decimalLatitude <span class="ot">&lt;-</span> <span class="fu">sapply</span>(combined_dataframe<span class="sc">$</span>CleanedData.Geographical.location..N, dms_to_dd)</span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>decimalLongitude <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">sapply</span>(combined_dataframe<span class="sc">$</span>CleanedData.Geographical.location.W, dms_to_dd)</span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a><span class="co"># Add missing locality information</span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>coordinateUncertaintyInMeters <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>country <span class="ot">&lt;-</span> <span class="st">&quot;Portugal&quot;</span></span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>locality <span class="ot">&lt;-</span> <span class="st">&quot;Berlengas Biosphere Reserve&quot;</span></span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a>combined_dataframe<span class="sc">$</span>geodeticDatum <span class="ot">&lt;-</span> <span class="st">&quot;WGS84&quot;</span></span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>combined_dataframe <span class="ot">&lt;-</span> combined_dataframe <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>CleanedData.Geographical.location..N, </span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a>                                                    <span class="sc">-</span>CleanedData.Geographical.location.W)</span></code></pre></div>
 </div>
 <div id="occurrenceid" class="section level2">
 <h2>occurrenceID</h2>
@@ -2186,14 +2181,15 @@ decimalLatitude, occurrenceStatus, basisOfRecord.</p>
 <h2>eventDate</h2>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>occurrence <span class="ot">&lt;-</span> occurrence <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>    <span class="at">eventDate =</span> <span class="fu">match</span>(CleanedData.Month, month.abb),</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="at">eventDate =</span> <span class="fu">sprintf</span>(<span class="st">&quot;%02d&quot;</span>, eventDate),</span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>    <span class="at">eventDate =</span> <span class="fu">paste0</span>(CleanedData.Year, <span class="st">&quot;-&quot;</span>, eventDate)</span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>CleanedData.Date,</span>
-<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>         <span class="sc">-</span>CleanedData.Month,</span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>         <span class="sc">-</span>CleanedData.Season,</span>
-<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>         <span class="sc">-</span>CleanedData.Year)</span></code></pre></div>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>    <span class="at">CleanedData.Month =</span> <span class="fu">ifelse</span>(CleanedData.Month <span class="sc">==</span> <span class="st">&quot;Sept&quot;</span>, <span class="st">&quot;Sep&quot;</span>, CleanedData.Month),</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="at">eventDate =</span> <span class="fu">match</span>(CleanedData.Month, month.abb),</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>    <span class="at">eventDate =</span> <span class="fu">sprintf</span>(<span class="st">&quot;%02d&quot;</span>, eventDate),</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>    <span class="at">eventDate =</span> <span class="fu">paste0</span>(CleanedData.Year, <span class="st">&quot;-&quot;</span>, eventDate)</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>CleanedData.Date,</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>         <span class="sc">-</span>CleanedData.Month,</span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>         <span class="sc">-</span>CleanedData.Season,</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>         <span class="sc">-</span>CleanedData.Year)</span></code></pre></div>
 </div>
 <div id="depth" class="section level2">
 <h2>depth</h2>
